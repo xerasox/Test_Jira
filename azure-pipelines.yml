@@ -15,6 +15,6 @@ steps:
   inputs:
     script: |
       curl --request GET --url "https://erasoxavier.atlassian.net/rest/api/3/issue/SCRUM-1/comment" --user "eraso.xavier@gmail.com:%JIRA_TOKEN%" --header "Accept: application/json"
-    failOnStderr: false
+    failOnStderr: true
   env:
     JIRA_TOKEN: $(jiraToken)
