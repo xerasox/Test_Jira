@@ -21,5 +21,3 @@ steps:
       $encodedCredentials = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($credentials))
       $headers["Authorization"] = "Basic $encodedCredentials"
       Invoke-WebRequest -Uri "https://erasoxavier.atlassian.net/rest/api/3/issue/SCRUM-1/comment" -Method GET -Headers $headers
-  env:
-    JiraToken: $(jiraToken)
