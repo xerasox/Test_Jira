@@ -14,7 +14,7 @@ steps:
 - task: CmdLine@2
   inputs:
     script: |
-      curl --request GET --url "https://erasoxavier.atlassian.net/rest/api/3/issue/SCRUM-1/comment" --user "eraso.xavier@gmail.com:ATATT3xFfGF070T9Lx5dtmprmyeGeSGr0nVPzOBpXtIkSS2TGAHl22Kyxmnc1Ogzuqxmlgh1JreMKS6rUiBKxG0G1JynM7gqyAr8Pe3QsCVqLtRbioFKCe6i8B03Lc253HZ_hph_Bt57R5btm2nO6HglxM0T7X0Zs-2nsQAb5Nzt5uIVHhtfy5E=4DEE767C" --header "Accept: application/json"
+      curl --request GET --url "https://erasoxavier.atlassian.net/rest/api/3/issue/SCRUM-1/comment" --user "eraso.xavier@gmail.com:ATATT3xFfGF0UkfFHd_uRhtQmg1Kd8YgfSqf-HGT_vTsuXH-iV8L5CGifdpf6IJrY61VSJZd5qqos29GRxYoHF-DdOrqIJ5vlSBd_M3utXGok89_UNHxXXCd89j9vCrsrCSSdNz6R-ak6XfWMQ-0_ri37O8KBnDUx6VlXNWH7rl8khrlFeNLg-k=5FDBC801" --header "Accept: application/json"
     failOnStderr: true
   env:
     JIRA_TOKEN: $(jiraToken)
