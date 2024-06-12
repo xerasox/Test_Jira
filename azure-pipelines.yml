@@ -9,12 +9,12 @@ variables:
 pool:
   name: 'Default'
 
-steps:
 
-- task: CmdLine@2
+steps:
+- task: PowerShell@2
   inputs:
+    targetType: 'inline'
     script: |
-      curl --request GET --url "https://erasoxavier.atlassian.net/rest/api/3/issue/SCRUM-1/comment" --user "eraso.xavier@gmail.com:ATATT3xFfGF0UkfFHd_uRhtQmg1Kd8YgfSqf-HGT_vTsuXH-iV8L5CGifdpf6IJrY61VSJZd5qqos29GRxYoHF-DdOrqIJ5vlSBd_M3utXGok89_UNHxXXCd89j9vCrsrCSSdNz6R-ak6XfWMQ-0_ri37O8KBnDUx6VlXNWH7rl8khrlFeNLg-k=5FDBC801" --header "Accept: application/json"
-    failOnStderr: true
+      curl --request GET --url "https://erasoxavier.atlassian.net/rest/api/3/issue/SCRUM-1/comment" --user "eraso.xavier@gmail.com:$($env:JIRA_TOKEN)" --header "Accept: application/json"
   env:
     JIRA_TOKEN: $(jiraToken)
