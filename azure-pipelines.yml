@@ -15,7 +15,7 @@ steps:
 
 - task: CmdLine@2
   inputs:
-    script: curl -XGET -H "Authorization:$(connectionId)" -H "Content-type:application/json" "http://cwcc.bmc.com:2020/ispw/iccga/releases/TEST0001/tasks"
+    script: curl -XGET -H "Authorization:$connectionId" -H "Content-type:application/json" "http://cwcc.bmc.com:2020/ispw/iccga/releases/TEST0001/tasks"
     failOnStderr: true
 
 - task: CmdLine@2
