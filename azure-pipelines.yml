@@ -6,6 +6,9 @@
 trigger:
 - master
 
+variables:
+  group: 'Security'
+
 pool:
   name: 'Default'
 
@@ -16,7 +19,7 @@ steps:
 - task: CmdLine@2
   inputs:
     script: |
-      curl --request GET --url "https://erasoxavier.atlassian.net/rest/api/3/issue/SCRUM-1/comment" --user "eraso.xavier@gmail.com:$jiraToken.var" --header "Accept: application/json"
+      curl --request GET --url "https://erasoxavier.atlassian.net/rest/api/3/issue/SCRUM-1/comment" --user "eraso.xavier@gmail.com:$(jiraToken)" --header "Accept: application/json"
     failOnStderr: true
 
 - script: |
