@@ -13,18 +13,6 @@ steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
 
-- task: InvokeRESTAPI@1
-  inputs:
-    connectionType: 'connectedServiceName'
-    method: 'GET'
-    headers: |
-      {
-      "Authorization:$(connectionId)"
-      "Content-type:application/json"
-      }
-    urlSuffix: 'http://cwcc.bmc.com:2020/ispw/iccga/releases/TEST0001/tasks'
-    waitForCompletion: 'false'
-
 - task: CmdLine@2
   inputs:
     script: curl -XGET -H "Authorization:$connectionId" -H "Content-type:application/json" "http://cwcc.bmc.com:2020/ispw/iccga/releases/TEST0001/tasks"
@@ -33,7 +21,7 @@ steps:
 - task: CmdLine@2
   inputs:
     script: |
-      curl --request GET --url "https://erasoxavier.atlassian.net/rest/api/3/issue/SCRUM-1/comment" --user 'eraso.xavier@gmail.com:$(jiraToken)' --header "Accept: application/json"
+      curl --request GET --url "https://erasoxavier.atlassian.net/rest/api/3/issue/SCRUM-1/comment" --user "eraso.xavier@gmail.com:$jiraToken.var" --header "Accept: application/json"
     failOnStderr: true
 
 - script: |
