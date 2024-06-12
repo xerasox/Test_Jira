@@ -15,6 +15,12 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      curl --request GET --url "https://erasoxavier.atlassian.net/rest/api/3/issue/SCRUM-1/comment" --user "eraso.xavier@gmail.com:$($env:JIRA_TOKEN)" --header "Accept: application/json"
+      $headers = @{
+        "Accept" = "application/json"
+      }
+      $credentials = "eraso.xavier@gmail.com:$($env:JIRA_TOKEN)"
+      $encodedCredentials = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($credentials))
+      $headers["Authorization"] = "Basic $encodedCredentials"
+      Invoke-WebRequest -Uri "https://erasoxavier.atlassian.net/rest/api/3/issue/SCRUM-1/comment" -Method GET -Headers $headers
   env:
     JIRA_TOKEN: $(jiraToken)
