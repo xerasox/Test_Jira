@@ -13,6 +13,14 @@ steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
 
+- task: CmdLine@2
+  inputs:
+    script: |
+      curl --request GET \
+        --url 'https://erasoxavier.atlassian.net/rest/api/3/issue/SCRUM-1/comment' \
+        --user 'eraso.xavier@gmail.com:$(JIRA_Token)' \
+        --header 'Accept: application/json'
+
 - script: |
     echo Add other tasks to build, test, and deploy your project.
     echo See https://aka.ms/yaml
