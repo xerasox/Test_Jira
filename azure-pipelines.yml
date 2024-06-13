@@ -14,9 +14,13 @@ steps:
     targetType: 'inline'
     script: |
       $headers = @{}
-          $headers.Add("Authorization", '"$(connectionId)"')
+          $headers.Add("Authorization", '"$env:connectionId"')
           $headers.Add("Content-Type", "application/json")
+      echo $headers
       Invoke-WebRequest -Uri "http://cwcc.bmc.com:2020/ispw/iccga/releases/BMCTEST'" -Method GET -Headers $headers
+  env:
+    connectionId: $(connectionId)
+
 
 - task: PowerShell@2
   inputs:
