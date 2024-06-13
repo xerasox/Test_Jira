@@ -2,7 +2,7 @@ trigger:
 - master
 
 variables:
-  group: 'Security'
+  group: 'test-group'
 
 pool:
   name: 'Default'
