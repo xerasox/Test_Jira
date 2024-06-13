@@ -20,9 +20,11 @@ steps:
       $headers = @{
         "Accept" = "application/json"
       }
-      $credentials = "eraso.xavier@gmail.com:'$(jiraToken)'"
+      $credentials = "eraso.xavier@gmail.com:$JIRA_TOKEN"
       echo $credentials
       $encodedCredentials = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($credentials))
       $headers["Authorization"] = "Basic $encodedCredentials"
       echo $headers
       Invoke-WebRequest -Uri "https://erasoxavier.atlassian.net/rest/api/3/issue/SCRUM-1/comment" -Method GET -Headers $headers
+  env:
+    JIRA_TOKEN: $(jiraToken)
