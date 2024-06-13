@@ -9,6 +9,16 @@ pool:
 
 steps:
 - task: PowerShell@2
+  displayName: Check Release
+  inputs:
+    targetType: 'inline'
+    script: |
+      $headers = @{}
+          $headers.Add("Authorization", '"$(connectionId)"')
+          $headers.Add("Content-Type", "application/json")
+      Invoke-WebRequest -Uri "http://cwcc.bmc.com:2020/ispw/iccga/releases/BMCTEST'" -Method GET -Headers $headers
+
+- task: PowerShell@2
   inputs:
     targetType: 'inline'
     script: |
