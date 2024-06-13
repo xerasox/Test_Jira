@@ -8,18 +8,8 @@ pool:
   name: 'Default'
 
 steps:
-- task: PowerShell@2
-  displayName: Check Release
-  inputs:
-    targetType: 'inline'
-    script: |
-      $headers = @{}
-          $headers.Add("Authorization", $env:connectionId)
-          $headers.Add("Content-Type", "application/json")
-      echo $headers
-      Invoke-WebRequest -Uri "http://cwcc.bmc.com:2020/ispw/iccga/releases/BMCTEST'" -Method GET -Headers $headers
-  env:
-    connectionId: $(connectionId)
+
+
 
 
 - task: PowerShell@2
@@ -30,6 +20,7 @@ steps:
         "Accept" = "application/json"
       }
       $credentials = "eraso.xavier@gmail.com:$env:jiraToken"
+      echo $credentials
       $encodedCredentials = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($credentials))
       $headers["Authorization"] = "Basic $encodedCredentials"
       echo $headers
