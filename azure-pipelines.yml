@@ -28,7 +28,7 @@ steps:
       $headers = @{
         "Accept" = "application/json"
       }
-      $credentials = "eraso.xavier@gmail.com:'$(jiraToken)'"
+      $credentials = "eraso.xavier@gmail.com:$(jiraToken)"
       $Bytes = [System.Text.Encoding]::UTF8.GetBytes($credentials)
       $encodedCredentials = [Convert]::ToBase64String($Bytes)
       $headers["Authorization"] = "Basic $encodedCredentials"
