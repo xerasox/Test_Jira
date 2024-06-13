@@ -31,5 +31,7 @@ steps:
       $Bytes = [System.Text.Encoding]::UTF8.GetBytes($credentials)
       $encodedCredentials = [Convert]::ToBase64String($Bytes)
       $headers["Authorization"] = "Basic $encodedCredentials"
-      Invoke-WebRequest -Uri "https://erasoxavier.atlassian.net/rest/api/2/issue/SCRUM-1/comment" -Method GET -Headers $headers
+      $response = Invoke-WebRequest -Uri "https://erasoxavier.atlassian.net/rest/api/2/issue/SCRUM-1/comment" -Method GET -Headers $headers
+      $comment = $response.comments.body
+      Write-Host $comment
     
