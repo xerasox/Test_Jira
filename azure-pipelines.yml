@@ -16,7 +16,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      echo $(jiraToken)
+      echo $JIRA_TOKEN
       $headers = @{
         "Accept" = "application/json"
       }
