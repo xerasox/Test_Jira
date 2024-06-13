@@ -20,6 +20,7 @@ steps:
       Invoke-WebRequest -Uri "http://cwcc.bmc.com:2020/ispw/iccga/releases/BMCTEST" -Method GET -Headers $headers
   
 - task: PowerShell@2
+  displayName: Jira Comment
   inputs:
     targetType: 'inline'
     script: |
