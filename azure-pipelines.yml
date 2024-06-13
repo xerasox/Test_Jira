@@ -33,4 +33,5 @@ steps:
       $headers["Authorization"] = "Basic $encodedCredentials"
       $result = Invoke-WebRequest -Uri "https://erasoxavier.atlassian.net/rest/api/2/issue/SCRUM-1" -Method GET -Headers $headers
       $comment = $result.comment
-      echo $comment
+      Write-Host $result
+      Write-Host $comment
