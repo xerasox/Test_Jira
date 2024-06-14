@@ -33,8 +33,11 @@ steps:
       $headers["Authorization"] = "Basic $encodedCredentials"
       $response = Invoke-WebRequest -Uri "https://erasoxavier.atlassian.net/rest/api/2/issue/SCRUM-1" -Method GET -Headers $headers
 
+      # Convert the response content to a JSON object
+      $parsedJson = $response.Content | ConvertFrom-Json
+
       # Assuming 'status' is directly under the root object and has a 'name' property
-      $text = $response.fields.status.name
+      $text = $parsedJson.fields.status.name
 
       Write-Host "Affichage :"
       # Write-Host $response removed to avoid cluttering the output with raw HTML/JSON
