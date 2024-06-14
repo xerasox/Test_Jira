@@ -35,9 +35,7 @@ steps:
       Write-Host "Full JSON Response:"
       Write-Host $parsedJson | ConvertTo-Json -Depth 100
 
-      # Assuming the correct path to the name property is found to be in someObject.name
-      # Adjust the following line according to the actual structure
-      $text = $parsedJson.fields.summary # Example adjustment based on common JIRA API structure
+      $text = $parsedJson.status.statusCategory.name
 
       Write-Host "Affichage :"
       Write-Host $response
