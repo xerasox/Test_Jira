@@ -35,7 +35,7 @@ steps:
       Write-Host "Full JSON Response:"
       Write-Host $parsedJson | ConvertTo-Json -Depth 100
 
-      $text = $parsedJson.status.statusCategory.name
+      $text = $parsedJson.status.name
 
       Write-Host "Affichage :"
       Write-Host $response
