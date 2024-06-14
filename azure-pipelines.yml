@@ -43,3 +43,27 @@ steps:
       # Write-Host $response removed to avoid cluttering the output with raw HTML/JSON
       Write-Host $text
     
+- task: PowerShell@2
+  displayName: Jira BMC Comment
+  inputs:
+    targetType: 'inline'
+    script: |
+      $headers = @{
+        "Accept" = "application/json"
+      }
+      $credentials = "xavier_eraso@bmc.com:$(jiraBmcToken)"
+      $Bytes = [System.Text.Encoding]::UTF8.GetBytes($credentials)
+      $encodedCredentials = [Convert]::ToBase64String($Bytes)
+      $headers["Authorization"] = "Basic $encodedCredentials"
+      $response = Invoke-WebRequest -Uri "https://jira.zeng.bmc.com/jira/rest/api/2/issue/FTS-1759/comment" -Method GET -Headers $headers
+
+      # Convert the response content to a JSON object
+      $parsedJson = $response.Content | ConvertFrom-Json
+
+      # Access the 'body' field of the first comment in the 'comments' array
+      $text = $parsedJson.comments[0].body
+
+      Write-Host "Affichage :"
+      # Write-Host $response removed to avoid cluttering the output with raw HTML/JSON
+      Write-Host $text
+    
