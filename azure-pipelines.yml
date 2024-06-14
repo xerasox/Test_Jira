@@ -32,7 +32,8 @@ steps:
       $encodedCredentials = [Convert]::ToBase64String($Bytes)
       $headers["Authorization"] = "Basic $encodedCredentials"
       $response = Invoke-WebRequest -Uri "https://erasoxavier.atlassian.net/rest/api/2/issue/SCRUM-1" -Method GET -Headers $headers
-      $text = $response
+      $text = $response.self
       Write-Host "Affichage : "
+      Write-Host $response
       Write-Host $text
     
