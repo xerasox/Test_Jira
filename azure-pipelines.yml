@@ -31,14 +31,14 @@ steps:
       $Bytes = [System.Text.Encoding]::UTF8.GetBytes($credentials)
       $encodedCredentials = [Convert]::ToBase64String($Bytes)
       $headers["Authorization"] = "Basic $encodedCredentials"
-      $response = Invoke-WebRequest -Uri "https://erasoxavier.atlassian.net/rest/api/2/issue/SCRUM-1" -Method GET -Headers $headers
+      $response = Invoke-WebRequest -Uri "https://erasoxavier.atlassian.net/rest/api/2/issue/SCRUM-1/comment" -Method GET -Headers $headers
 
       # Convert the response content to a JSON object
       $parsedJson = $response.Content | ConvertFrom-Json
 
       # Assuming 'status' is directly under the root object and has a 'name' property
-      $text = $parsedJson.fields.status.name
-
+      $text = $parsedJson.comments[0].body
+      
       Write-Host "Affichage :"
       # Write-Host $response removed to avoid cluttering the output with raw HTML/JSON
       Write-Host $text
