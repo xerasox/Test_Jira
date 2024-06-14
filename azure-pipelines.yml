@@ -36,9 +36,10 @@ steps:
       # Convert the response content to a JSON object
       $parsedJson = $response.Content | ConvertFrom-Json
 
-      # Assuming 'status' is directly under the root object and has a 'name' property
-      $text = $parsedJson.comments[0].body
-      
+      # Access the 'body' field of the first comment in the 'comments' array
+      # $text = $parsedJson.comments[0].body
+      $text = $response.comments[0].body
+
       Write-Host "Affichage :"
       # Write-Host $response removed to avoid cluttering the output with raw HTML/JSON
       Write-Host $text
