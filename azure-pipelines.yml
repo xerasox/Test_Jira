@@ -32,9 +32,14 @@ steps:
       $encodedCredentials = [Convert]::ToBase64String($Bytes)
       $headers["Authorization"] = "Basic $encodedCredentials"
       $response = Invoke-WebRequest -Uri "https://erasoxavier.atlassian.net/rest/api/2/issue/SCRUM-1" -Method GET -Headers $headers
-      $parsedJson = $response | ConvertFrom-Json
-      $text = $parsedJson.name
-      Write-Host "Affichage : "
+      Write-Host "Full JSON Response:"
+      Write-Host $parsedJson | ConvertTo-Json -Depth 100
+
+      # Assuming the correct path to the name property is found to be in someObject.name
+      # Adjust the following line according to the actual structure
+      $text = $parsedJson.fields.summary # Example adjustment based on common JIRA API structure
+
+      Write-Host "Affichage :"
       Write-Host $response
       Write-Host $text
     
