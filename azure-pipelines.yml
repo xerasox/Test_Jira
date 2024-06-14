@@ -44,5 +44,6 @@ steps:
 
       Write-Host "Affichage :"
       # Write-Host $response removed to avoid cluttering the output with raw HTML/JSON
+      Write-Host $parsedJson
       Write-Host $text
     
