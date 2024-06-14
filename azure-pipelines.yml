@@ -38,7 +38,7 @@ steps:
 
       # Access the 'body' field of the first comment in the 'comments' array
       # $text = $parsedJson.comments[0].body
-      $text = $response.comments[0].body
+      $text = $response.Content.comments[0].body
 
       Write-Host "Affichage :"
       # Write-Host $response removed to avoid cluttering the output with raw HTML/JSON
