@@ -32,7 +32,8 @@ steps:
         "stream" = "GITFLOW"
         "application" = "GFLD"
         "subAppl" = "GFLD"
-        "defaultPath" = "FEAT"
+        "defaultPath" = "UNIT"
+        "sandboxJoinAtLevel" = "FEAT"
         "description" = "assignment for SCRUM-1"
         "assignmentPrefix" = "feature/"
       } | ConvertTo-Json
