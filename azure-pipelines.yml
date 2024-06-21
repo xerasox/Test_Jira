@@ -34,10 +34,26 @@ steps:
         "subAppl" = "GFLD"
         "defaultPath" = "FEAT"
         "description" = "assignment for SCRUM-1"
-        "assignmentPrefix" = "feature/"
+        "assignmentPrefix" = ""
       } | ConvertTo-Json
 
-      Invoke-WebRequest -Uri "http://cwcc.bmc.com:2020/ispw/iccga/assignments/" -Method POST -Headers $headers -Body $body -ContentType "application/json"
+      # Log headers and body
+      Write-Host "Headers: $($headers | ConvertTo-Json)"
+      Write-Host "Body: $body"
+
+      try {
+        $response = Invoke-WebRequest -Uri "http://cwcc.bmc.com:2020/ispw/iccga/assignments/" -Method POST -Headers $headers -Body $body -ContentType "application/json"
+        Write-Host "Response: $($response.Content)"
+      }
+      catch {
+        Write-Host "Error: $($_.Exception.Message)"
+        if ($_.Exception.Response -ne $null) {
+          $responseStream = [System.IO.StreamReader]::new($_.Exception.Response.GetResponseStream())
+          $responseBody = $responseStream.ReadToEnd()
+          Write-Host "Response Body: $responseBody"
+        }
+        exit 1
+      }
 
 - task: PowerShell@2
   displayName: Jira Comment
