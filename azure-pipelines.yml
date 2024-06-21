@@ -43,7 +43,7 @@ steps:
       Write-Host "Body: $body"
 
       try {
-        $response = Invoke-WebRequest -Uri "http://cwcc.bmc.com:2020/ispw/ic2ga/assignments/" -Method POST -Headers $headers -Body $body -ContentType "application/json"
+        $response = Invoke-WebRequest -Uri "http://cwc2.bmc.com:2020/ispw/ic2ga/assignments/" -Method POST -Headers $headers -Body $body -ContentType "application/json"
         Write-Host "Response: $($response.Content)"
       }
       catch {
