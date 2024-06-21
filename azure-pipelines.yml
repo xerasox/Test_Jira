@@ -18,7 +18,27 @@ steps:
           $headers.Add("Authorization", "$(cesAuth)")
           $headers.Add("Content-Type", "application/json")
       Invoke-WebRequest -Uri "http://cwcc.bmc.com:2020/ispw/iccga/releases/BMCTEST" -Method GET -Headers $headers
-  
+
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      $headers = @{
+        "Authorization" = "$(cesAuth)"
+        "Content-Type" = "application/json"
+      }
+
+      $body = @{
+        "stream" = "GITFLOW"
+        "application" = "GFLD"
+        "subAppl" = "GFLD"
+        "defaultPath" = "FEAT"
+        "description" = "assignment for SCRUM-1"
+        "assignmentPrefix" = "feature/"
+      } | ConvertTo-Json
+
+      Invoke-WebRequest -Uri "http://cwcc.bmc.com:2020/ispw/iccga/assignments/" -Method POST -Headers $headers -Body $body -ContentType "application/json"
+
 - task: PowerShell@2
   displayName: Jira Comment
   inputs:
