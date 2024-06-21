@@ -24,7 +24,7 @@ steps:
     targetType: 'inline'
     script: |
       $headers = @{
-        "Authorization" = "$(cesAuth)"
+        "Authorization" = "$(ces2Token)"
         "Content-Type" = "application/json"
       }
 
