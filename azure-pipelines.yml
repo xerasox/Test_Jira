@@ -33,7 +33,6 @@ steps:
         "application" = "GFLD"
         "subAppl" = "GFLD"
         "defaultPath" = "UNIT"
-        "sandboxJoinAtLevel" = "FEAT"
         "description" = "assignment for SCRUM-1"
         "assignmentPrefix" = "feature/"
       } | ConvertTo-Json
