@@ -24,15 +24,15 @@ steps:
     targetType: 'inline'
     script: |
       $headers = @{
-        "Authorization" = "$(ces2Token)"
+        "Authorization" = "$(cesAuth)"
         "Content-Type" = "application/json"
       }
 
       $body = @{
-        "stream" = "GITFLOW"
-        "application" = "GFLD"
-        "subAppl" = "GFLD"
-        "defaultPath" = "UNIT"
+        "stream" = "GITDEMO"
+        "application" = "GIT1"
+        "subAppl" = "GIT1"
+        "defaultPath" = "WRK2"
         "description" = "assignment for SCRUM-1"
         "assignmentPrefix" = "feature/"
       } | ConvertTo-Json
@@ -42,7 +42,7 @@ steps:
       Write-Host "Body: $body"
 
       try {
-        $response = Invoke-WebRequest -Uri "http://cwc2.bmc.com:2020/ispw/ic2ga/assignments/" -Method POST -Headers $headers -Body $body -ContentType "application/json"
+        $response = Invoke-WebRequest -Uri "http://cwcc.bmc.com:2020/ispw/iccga/assignments/" -Method POST -Headers $headers -Body $body -ContentType "application/json"
         Write-Host "Response: $($response.Content)"
       }
       catch {
