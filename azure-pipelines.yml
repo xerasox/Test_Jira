@@ -68,13 +68,6 @@ steps:
       $encodedCredentials = [Convert]::ToBase64String($bytes)
       $headers["Authorization"] = "Basic $encodedCredentials"
 
-      # Example response body for demonstration
-      $responseBody = @{
-          Response = @{
-              assignmentId = "ASSIGNMENT_ID_VALUE"
-          }
-      }
-
       # Construct the body with dynamic assignmentId
       $body = @{
           body = @{
@@ -82,7 +75,7 @@ steps:
                   @{
                       content = @(
                           @{
-                              text = "$($responseBody.Response.assignmentId)"
+                              text = "Assignement $myAssignmentId has been created for this feature"
                               type = "text"
                           }
                       )
