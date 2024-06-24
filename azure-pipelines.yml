@@ -46,8 +46,9 @@ steps:
         exit 1
       }
 
-      $myAssignmentId = $response.Content.assignmentId
-      Write-Host "myAssignmentId: $($myAssignmentId)"
+      $responseContent = $response.Content | ConvertFrom-Json
+      $myAssignmentId = $responseContent.assignmentId
+      Write-Host "myAssignmentId: $myAssignmentId"
     
 - task: PowerShell@2
   displayName: 'Jira Post Comment'
