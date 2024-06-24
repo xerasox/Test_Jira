@@ -69,22 +69,23 @@ steps:
       $headers["Authorization"] = "Basic $encodedCredentials"
 
       # Construct the body with dynamic assignmentId
-      $body =   "body": {
-                "content": [
-                  {
-                    "content": [
-                      {
-                        "text": "Envoye depuis mon Jenkins"
-                        "type": "text"
-                      }
-                    ],
-                    "type": "paragraph"
+      $body = @{
+          body = @{
+              content = @(
+                  @{
+                      content = @(
+                          @{
+                              text = "Envoye depuis mon Jenkins"
+                              type = "text"
+                          }
+                      )
+                      type = "paragraph"
                   }
-                ],
-                "type": "doc"
-                "version": 1
-              } 
-            } | ConvertTo-Json
+              )
+              type = "doc"
+              version = 1
+          }
+      } | ConvertTo-Json
 
       # Define the URL for Jira REST API endpoint
       $url = "https://erasoxavier.atlassian.net/rest/api/2/issue/SCRUM-1/comment"
