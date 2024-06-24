@@ -20,6 +20,7 @@ steps:
       Invoke-WebRequest -Uri "http://cwcc.bmc.com:2020/ispw/iccga/releases/BMCTEST" -Method GET -Headers $headers
 
 - task: PowerShell@2
+  displayName: Create Assignment
   inputs:
     targetType: 'inline'
     script: |
@@ -56,7 +57,7 @@ steps:
       }
 
 - task: PowerShell@2
-  displayName: Jira Comment
+  displayName: Jira Get Comment
   inputs:
     targetType: 'inline'
     script: |
@@ -79,4 +80,55 @@ steps:
       # Write-Host $response removed to avoid cluttering the output with raw HTML/JSON
       Write-Host $text
     
-    
+- task: PowerShell@2
+  displayName: 'Jira Post Comment'
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Define headers
+      $headers = @{
+          "Accept" = "application/json"
+      }
+
+      # Define credentials and encode for Basic Authentication
+      $username = "eraso.xavier@gmail.com"
+      $jiraToken = "$(jiraToken)"  # Ensure $(jiraToken) is replaced with your actual Jira API token
+      $credentials = "$($username):$($jiraToken)"
+      $bytes = [System.Text.Encoding]::UTF8.GetBytes($credentials)
+      $encodedCredentials = [Convert]::ToBase64String($bytes)
+      $headers["Authorization"] = "Basic $encodedCredentials"
+
+      # Example response body for demonstration
+      $responseBody = @{
+          Response = @{
+              assignmentId = "ASSIGNMENT_ID_VALUE"
+          }
+      }
+
+      # Construct the body with dynamic assignmentId
+      $body = @{
+          body = @{
+              content = @(
+                  @{
+                      content = @(
+                          @{
+                              text = "$($responseBody.Response.assignmentId)"
+                              type = "text"
+                          }
+                      )
+                      type = "paragraph"
+                  }
+              )
+              type = "doc"
+              version = 1
+          }
+      } | ConvertTo-Json
+
+      # Define the URL for Jira REST API endpoint
+      $url = "https://erasoxavier.atlassian.net/rest/api/2/issue/SCRUM-1/comment"
+
+      # Invoke the POST request
+      $response = Invoke-WebRequest -Uri $url -Method Post -Headers $headers -Body $body -ContentType "application/json"
+
+      # Output the response
+      Write-Output $response.Content
