@@ -74,7 +74,7 @@ steps:
                   @{
                       content = @(
                           @{
-                              text = "Test Curl"
+                              text = "The Assignment $myAssignmentId has been created for this feature"
                               type = "text"
                           }
                       )
