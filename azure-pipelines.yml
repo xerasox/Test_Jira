@@ -87,15 +87,32 @@ steps:
       }
 
       # Convert the body to JSON
-      $jsonBody = $body | ConvertTo-Json
+      $jsonBody = $body | ConvertTo-Json -Depth 10
 
-      # Construct the body with dynamic assignmentId
+      # Log the JSON body to check its structure
+      Write-Host "JSON Body:"
+      Write-Host $jsonBody
 
-      $response = Invoke-RestMethod -Method Post -Uri 'https://erasoxavier.atlassian.net/rest/api/3/issue/SCRUM-1/comment' -Headers $headers -Body $jsonBody
+      # Log the headers to check their structure
+      Write-Host "Headers:"
+      $headers.GetEnumerator() | ForEach-Object { Write-Host "$($_.Key) = $($_.Value)" }
 
-      # Output the response
-      $response
-      
+      # Make the POST request
+      try {
+          $response = Invoke-RestMethod -Method Post -Uri 'https://erasoxavier.atlassian.net/rest/api/3/issue/SCRUM-1/comment' -Headers $headers -Body $jsonBody
+          # Log the response
+          Write-Host "Response:"
+          Write-Host $response
+      } catch {
+          # Log the error message
+          Write-Host "Error Message:"
+          Write-Host $_.Exception.Message
+          # Log the detailed error
+          Write-Host "Detailed Error:"
+          Write-Host $_ | Format-List * -Force
+          throw
+      }
+            
 
 - task: PowerShell@2
   displayName: Jira Get Comment
