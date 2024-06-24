@@ -85,16 +85,30 @@ steps:
               type = "doc"
               version = 1
           }
-      } | ConvertTo-Json
+      } | ConvertTo-Json -Compress
+
+      # Log headers and body for debugging
+      Write-Host "Headers: $($headers | ConvertTo-Json -Compress)"
+      Write-Host "Body: $body"
 
       # Define the URL for Jira REST API endpoint
       $url = "https://erasoxavier.atlassian.net/rest/api/2/issue/SCRUM-1/comment"
 
-      # Invoke the POST request
-      $response = Invoke-WebRequest -Uri $url -Method Post -Headers $headers -Body $body -ContentType "application/json"
-
-      # Output the response
-      Write-Output $response.Content
+      try {
+          # Invoke the POST request
+          $response = Invoke-WebRequest -Uri $url -Method Post -Headers $headers -Body $body -ContentType "application/json"
+          # Output the response
+          Write-Output $response.Content
+      }
+      catch {
+          Write-Host "Error: $($_.Exception.Message)"
+          if ($_.Exception.Response -ne $null) {
+              $responseStream = [System.IO.StreamReader]::new($_.Exception.Response.GetResponseStream())
+              $responseBody = $responseStream.ReadToEnd()
+              Write-Host "Response Body: $responseBody"
+          }
+          exit 1
+      }
 
 - task: PowerShell@2
   displayName: Jira Get Comment
