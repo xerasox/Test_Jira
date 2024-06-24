@@ -58,6 +58,7 @@ steps:
       # Define headers
       $headers = @{
           "Accept" = "application/json"
+          "Content-Type" = "application/json"
       }
 
       # Define credentials and encode for Basic Authentication
@@ -68,24 +69,32 @@ steps:
       $encodedCredentials = [Convert]::ToBase64String($bytes)
       $headers["Authorization"] = "Basic $encodedCredentials"
       $body = @{
-                content = @[
-                    @{
-                        content = @[
-                            @{
-                                text = "Test Pipeline"
-                                type = "text"
-                            }
-                        ]
-                        type = "paragraph"
-                    }
-                ]
-                type = "doc"
-                version = 1
-            } | ConvertTo-Json
+          body = @{
+              content = @(
+                  @{
+                      content = @(
+                          @{
+                              text = "Test Curl"
+                              type = "text"
+                          }
+                      )
+                      type = "paragraph"
+                  }
+              )
+              type = "doc"
+              version = 1
+          }
+      }
+
+      # Convert the body to JSON
+      $jsonBody = $body | ConvertTo-Json
 
       # Construct the body with dynamic assignmentId
 
-      $response = Invoke-WebRequest -Uri "https://erasoxavier.atlassian.net/rest/api/2/issue/SCRUM-1/comment" -Method POST -Headers $headers -Body $body -ContentType "application/json"
+      $response = Invoke-RestMethod -Method Post -Uri 'https://erasoxavier.atlassian.net/rest/api/3/issue/SCRUM-1/comment' -Headers $headers -Body $jsonBody
+
+      # Output the response
+      $response
       
 
 - task: PowerShell@2
