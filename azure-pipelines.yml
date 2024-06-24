@@ -75,7 +75,7 @@ steps:
                   @{
                       content = @(
                           @{
-                              text = "Envoye depuis mon Jenkins"
+                              text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eget venenatis elit. Duis eu justo eget augue iaculis fermentum. Sed semper quam laoreet nisi egestas at posuere augue semper."
                               type = "text"
                           }
                       )
@@ -85,25 +85,23 @@ steps:
               type = "doc"
               version = 1
           }
-      } | ConvertTo-Json 
-
-      # Define the URL for Jira REST API endpoint
-      $url = "https://erasoxavier.atlassian.net/rest/api/2/issue/SCRUM-1/comment"
+          visibility = @{
+              identifier = "Administrators"
+              type = "role"
+              value = "Administrators"
+          }
+      } | ConvertTo-Json
 
       try {
-          # Invoke the POST request
-          $response = Invoke-WebRequest -Uri $url -Method Post -Headers $headers -Body $body 
-          # Output the response
-          Write-Output $response.Content
+          # Invoke the REST API request
+          $response = Invoke-RestMethod -Uri $url -Method Post -Headers $headers -Body $body -ContentType "application/json"
+
+          # Output the response content
+          Write-Output $response
       }
       catch {
-          Write-Host "Error: $($_.Exception.Message)"
-          if ($_.Exception.Response -ne $null) {
-              $responseStream = [System.IO.StreamReader]::new($_.Exception.Response.GetResponseStream())
-              $responseBody = $responseStream.ReadToEnd()
-              Write-Host "Response Body: $responseBody"
-          }
-          exit 1
+          Write-Error "Failed to post comment: $($_.Exception.Message)"
+          throw $_.Exception
       }
 
 - task: PowerShell@2
