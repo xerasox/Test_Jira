@@ -68,22 +68,20 @@ steps:
       $encodedCredentials = [Convert]::ToBase64String($bytes)
       $headers["Authorization"] = "Basic $encodedCredentials"
       $body = @{
-        {
-        "content": [
-          {
-            "content": [
-              {
-                "text": "Test Pipeline",
-                "type": "text"
-              }
-            ],
-            "type": "paragraph"
-          }
-        ],
-        "type": "doc",
-        "version": 1
-      }
-      } | ConvertTo-Json
+                content = @(
+                    @{
+                        content = @(
+                            @{
+                                text = "Test Pipeline"
+                                type = "text"
+                            }
+                        )
+                        type = "paragraph"
+                    }
+                )
+                type = "doc"
+                version = 1
+            } | ConvertTo-Json
 
       # Construct the body with dynamic assignmentId
 
