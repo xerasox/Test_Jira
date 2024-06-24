@@ -94,7 +94,7 @@ steps:
 
       try {
           # Invoke the REST API request
-          $response = Invoke-RestMethod -Uri $url -Method Post -Headers $headers -Body $body -ContentType "application/json"
+          $response = Invoke-RestMethod -Uri "https://erasoxavier.atlassian.net/rest/api/2/issue/SCRUM-1/comment" -Method Post -Headers $headers -Body $body -ContentType "application/json"
 
           # Output the response content
           Write-Output $response
