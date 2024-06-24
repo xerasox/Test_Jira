@@ -49,6 +49,9 @@ steps:
       $responseContent = $response.Content | ConvertFrom-Json
       $myAssignmentId = $responseContent.assignmentId
       Write-Host "myAssignmentId: $myAssignmentId"
+
+      # Set the assignment ID as a pipeline variable
+      Write-Host "##vso[task.setvariable variable=myAssignmentId]$myAssignmentId"
     
 - task: PowerShell@2
   displayName: 'Jira Post Comment'
@@ -68,6 +71,10 @@ steps:
       $bytes = [System.Text.Encoding]::UTF8.GetBytes($credentials)
       $encodedCredentials = [Convert]::ToBase64String($bytes)
       $headers["Authorization"] = "Basic $encodedCredentials"
+
+      # Retrieve the assignment ID from the pipeline variable
+      $myAssignmentId = "$(myAssignmentId)"
+
       $body = @{
           body = @{
               content = @(
