@@ -1,14 +1,8 @@
 trigger:
-  branches:
-    include:
-      - master
+- master
 
 variables:
-  - group: 'test-group'
-  - name: cesAuth  # Ensure cesAuth is defined in your pipeline variables/secrets
-    value: 'your_cesAuth_value_here'
-  - name: jiraToken  # Ensure jiraToken is defined in your pipeline variables/secrets
-    value: 'your_jira_token_here'
+- group: 'test-group'
 
 pool:
   name: 'Default'
@@ -20,13 +14,11 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      # Define headers
       $headers = @{
         "Authorization" = "$(cesAuth)"
         "Content-Type" = "application/json"
       }
 
-      # Define body for assignment creation
       $body = @{
         "stream" = "GITDEMO"
         "application" = "GIT1"
@@ -36,16 +28,16 @@ steps:
         "assignmentPrefix" = "GIT1"
       } | ConvertTo-Json
 
-      # Log headers and body for debugging
+      # Log headers and body
       Write-Host "Headers: $($headers | ConvertTo-Json)"
       Write-Host "Body: $body"
 
       try {
         $response = Invoke-WebRequest -Uri "http://cwcc.bmc.com:2020/ispw/iccga/assignments/" -Method POST -Headers $headers -Body $body -ContentType "application/json"
-        Write-Host "Assignment Creation Response: $($response.Content)"
+        Write-Host "Response: $($response.Content)"
       }
       catch {
-        Write-Host "Error creating assignment: $($_.Exception.Message)"
+        Write-Host "Error: $($_.Exception.Message)"
         if ($_.Exception.Response -ne $null) {
           $responseStream = [System.IO.StreamReader]::new($_.Exception.Response.GetResponseStream())
           $responseBody = $responseStream.ReadToEnd()
@@ -53,20 +45,23 @@ steps:
         }
         exit 1
       }
+
+      $myAssignmentId = $response.Content.assignmentId
+      Write-Host "myAssignmentId: $($myAssignmentId)"
     
 - task: PowerShell@2
   displayName: 'Jira Post Comment'
   inputs:
     targetType: 'inline'
     script: |
-      # Define headers for Jira API
+      # Define headers
       $headers = @{
           "Accept" = "application/json"
       }
 
-      # Encode credentials for Basic Authentication
+      # Define credentials and encode for Basic Authentication
       $username = "eraso.xavier@gmail.com"
-      $jiraToken = "$(jiraToken)"
+      $jiraToken = "$(jiraToken)"  # Ensure $(jiraToken) is replaced with your actual Jira API token
       $credentials = "$($username):$($jiraToken)"
       $bytes = [System.Text.Encoding]::UTF8.GetBytes($credentials)
       $encodedCredentials = [Convert]::ToBase64String($bytes)
@@ -79,8 +74,8 @@ steps:
           }
       }
 
-      # Construct the body for posting a comment to Jira issue
-      $jiraBody = @{
+      # Construct the body with dynamic assignmentId
+      $body = @{
           body = @{
               content = @(
                   @{
@@ -98,24 +93,14 @@ steps:
           }
       } | ConvertTo-Json
 
-      # Define the URL for Jira REST API endpoint (replace SCRUM-1 with actual issue key)
-      $jiraUrl = "https://erasoxavier.atlassian.net/rest/api/2/issue/SCRUM-1/comment"
+      # Define the URL for Jira REST API endpoint
+      $url = "https://erasoxavier.atlassian.net/rest/api/2/issue/SCRUM-1/comment"
 
-      # Invoke the POST request to post comment in Jira
-      try {
-        $jiraResponse = Invoke-WebRequest -Uri $jiraUrl -Method Post -Headers $headers -Body $jiraBody -ContentType "application/json"
-        Write-Host "Jira Comment Response: $($jiraResponse.Content)"
-      }
-      catch {
-        Write-Host "Error posting comment to Jira: $($_.Exception.Message)"
-        if ($_.Exception.Response -ne $null) {
-          $responseStream = [System.IO.StreamReader]::new($_.Exception.Response.GetResponseStream())
-          $responseBody = $responseStream.ReadToEnd()
-          Write-Host "Response Body: $responseBody"
-        }
-        exit 1
-      }
+      # Invoke the POST request
+      $response = Invoke-WebRequest -Uri $url -Method Post -Headers $headers -Body $body -ContentType "application/json"
 
+      # Output the response
+      Write-Output $response.Content
 
 - task: PowerShell@2
   displayName: Jira Get Comment
