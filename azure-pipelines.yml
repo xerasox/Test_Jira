@@ -67,42 +67,28 @@ steps:
       $bytes = [System.Text.Encoding]::UTF8.GetBytes($credentials)
       $encodedCredentials = [Convert]::ToBase64String($bytes)
       $headers["Authorization"] = "Basic $encodedCredentials"
-
-      # Construct the body with dynamic assignmentId
       $body = @{
-          body = @{
-              content = @(
-                  @{
-                      content = @(
-                          @{
-                              text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eget venenatis elit. Duis eu justo eget augue iaculis fermentum. Sed semper quam laoreet nisi egestas at posuere augue semper."
-                              type = "text"
-                          }
-                      )
-                      type = "paragraph"
-                  }
-              )
-              type = "doc"
-              version = 1
+        {
+        "content": [
+          {
+            "content": [
+              {
+                "text": "Test Pipeline",
+                "type": "text"
+              }
+            ],
+            "type": "paragraph"
           }
-          visibility = @{
-              identifier = "Administrators"
-              type = "role"
-              value = "Administrators"
-          }
+        ],
+        "type": "doc",
+        "version": 1
+      }
       } | ConvertTo-Json
 
-      try {
-          # Invoke the REST API request
-          $response = Invoke-RestMethod -Uri "https://erasoxavier.atlassian.net/rest/api/2/issue/SCRUM-1/comment" -Method Post -Headers $headers -Body $body -ContentType "application/json"
+      # Construct the body with dynamic assignmentId
 
-          # Output the response content
-          Write-Output $response
-      }
-      catch {
-          Write-Error "Failed to post comment: $($_.Exception.Message)"
-          throw $_.Exception
-      }
+      $response = Invoke-WebRequest -Uri "https://erasoxavier.atlassian.net/rest/api/2/issue/SCRUM-1/comment" -Method POST -Headers $headers -Body $body -ContentType "application/json"
+      
 
 - task: PowerShell@2
   displayName: Jira Get Comment
